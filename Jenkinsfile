@@ -5,26 +5,30 @@ pipeline {
         }
     }
     stages {
-        stage('Install Dependencies') {
+        stage('Install Dependencies') 
+        {
             steps {
-                sh 'npm install'
-                sh 'npx playwright install'
-                sh 'npm install -g artillery'
+                sh 'npm install' // Instala las dependencias de Node.js
+                sh 'npx playwright install' // Instala los navegadores de Playwright
+                sh 'npm install -g artillery' // Instala Artillery globalmente
             }
         }
-        stage('Playwright Tests') {
+        stage('Playwright Tests') 
+        {
             steps {
-                sh 'npm test'
+                sh 'npm test' // Ejecuta las pruebas de Playwright
             }
         }
-        stage('Artillery Tests') {
+        stage('Artillery Tests') 
+        {
             steps {
-                sh 'artillery run artillery.yml --output artillery-report.json'
+                sh 'artillery run artillery.yml --output artillery-report.json' // Ejecuta las pruebas de Artillery y genera un JSON
             }
         }
-        stage('Generate Reports') {
+        stage('Generate Reports') 
+        {
             steps {
-                publishHTML([
+                publishHTML([ // Publica el HTML de Playwright
                     allowMissing: false,
                     alwaysLinkToLastBuild: false,
                     keepAll: true,
@@ -32,8 +36,8 @@ pipeline {
                     reportFiles: 'index.html',
                     reportName: 'Playwright Report'
                 ])
-                sh 'artillery report artillery-report.json --output artillery-report.html'
-                archiveArtifacts artifacts: 'artillery-report.html'
+                sh 'artillery report artillery-report.json --output artillery-report.html' // Genera el reporte HTML de Artillery
+                archiveArtifacts artifacts: 'artillery-report.html' // Archiva el reporte HTML de Artillery
             }
         }
     }
