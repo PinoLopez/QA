@@ -1,18 +1,8 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18-alpine'
-            args '-u root'
-        }
-    }
+    agent any
     stages {
-        stage('Declarative: Checkout SCM') {
+        stage('Checkout') {
             steps {
-                sh 'rm -rf *' // Limpia todo el directorio de trabajo
-                sh 'whoami' // Verifica el usuario
-                sh 'ls -al' // Verifica los permisos
-                sh 'chmod -R 777 .' // Cambia los permisos a 777
-                sh 'npm cache clean --force' // limpia la cache de npm
                 checkout scm
             }
         }
