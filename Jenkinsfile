@@ -1,54 +1,47 @@
 pipeline {
     agent {
         docker {
-            image 'node:18-alpine' // Usa una imagen de Docker con Node.js
-            args '-u root' // Asegura que el contenedor se ejecute como root
+            image 'node:18-alpine'
+            args '-u root'
         }
     }
     stages {
-        stage('Declarative: Checkout SCM') 
-        {
-            steps 
-            {
-                sh 'rm -rf test-results' // Elimina el directorio test-results
-                sh 'whoami' // Verifica el usuario que está ejecutando los comandos
+        stage('Declarative: Checkout SCM') {
+            steps {
+                sh 'rm -rf *' // Limpia todo el directorio de trabajo
+                sh 'whoami' // Verifica el usuario
+                sh 'ls -al' // Verifica los permisos
+                sh 'chmod -R 777 .' // Cambia los permisos a 777
+                sh 'npm cache clean --force' // limpia la cache de npm
                 checkout scm
             }
         }
-        stage('Install Dependencies') 
-        {
+        stage('Install Dependencies') {
             steps {
-                sh 'npm install' // Instala las dependencias de Node.js
-                sh 'npx playwright install' // Instala los navegadores de Playwright
-                sh 'npm install -g artillery' // Instala Artillery globalmente
+                sh 'npm install'
+                sh 'npx playwright install'
+                sh 'npm install -g artillery'
             }
         }
-
-       stage('Playwright Tests') 
-       {
-    steps {
-        sh 'npx playwright install --with-deps' // Instala Playwright con dependencias
-        sh 'npm test' // Ejecuta las pruebas de Playwright
-    }
-    post 
-    {
-        always 
-        {
-            archiveArtifacts artifacts: 'playwright-report/**'
-        }
-    }
-    }   
-
-        stage('Artillery Tests') 
-        {
+        stage('Playwright Tests') {
             steps {
-                sh 'artillery run artillery.yml --output artillery-report.json' // Ejecuta las pruebas de Artillery y genera un JSON
+                sh 'npx playwright install --with-deps'
+                sh 'npm test'
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'playwright-report/**'
+                }
             }
         }
-        stage('Generate Reports') 
-        {
+        stage('Artillery Tests') {
             steps {
-                publishHTML([ // Publica el HTML de Playwright
+                sh 'artillery run artillery.yml --output artillery-report.json'
+            }
+        }
+        stage('Generate Reports') {
+            steps {
+                publishHTML([
                     allowMissing: false,
                     alwaysLinkToLastBuild: false,
                     keepAll: true,
@@ -56,8 +49,8 @@ pipeline {
                     reportFiles: 'index.html',
                     reportName: 'Playwright Report'
                 ])
-                sh 'artillery report artillery-report.json --output artillery-report.html' // Genera el reporte HTML de Artillery
-                archiveArtifacts artifacts: 'artillery-report.html' // Archiva el reporte HTML de Artillery
+                sh 'artillery report artillery-report.json --output artillery-report.html'
+                archiveArtifacts artifacts: 'artillery-report.html'
             }
         }
     }
