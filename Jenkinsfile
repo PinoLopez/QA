@@ -11,6 +11,7 @@ pipeline {
             steps 
             {
                 sh 'rm -rf test-results' // Elimina el directorio test-results
+                sh 'whoami' // Verifica el usuario que está ejecutando los comandos
                 checkout scm
             }
         }
