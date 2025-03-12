@@ -14,12 +14,22 @@ pipeline {
                 sh 'npm install -g artillery' // Instala Artillery globalmente
             }
         }
-        stage('Playwright Tests') 
+
+       stage('Playwright Tests') 
+       {
+    steps {
+        sh 'npx playwright install --with-deps' // Instala Playwright con dependencias
+        sh 'npm test' // Ejecuta las pruebas de Playwright
+    }
+    post 
+    {
+        always 
         {
-            steps {
-                sh 'npm test' // Ejecuta las pruebas de Playwright
-            }
+            archiveArtifacts artifacts: 'playwright-report/**'
         }
+    }
+    }   
+
         stage('Artillery Tests') 
         {
             steps {
