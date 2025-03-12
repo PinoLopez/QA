@@ -10,7 +10,7 @@ pipeline {
             steps {
                 sh 'npm install'
                 sh 'npx playwright install'
-                sh 'npm install -g artillery'
+                sh 'npm install -g artillery --save-dev'
             }
         }
         stage('Playwright Tests') {
