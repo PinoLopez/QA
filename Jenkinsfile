@@ -6,6 +6,14 @@ pipeline {
         }
     }
     stages {
+        stage('Declarative: Checkout SCM') 
+        {
+            steps 
+            {
+                sh 'rm -rf test-results' // Elimina el directorio test-results
+                checkout scm
+            }
+        }
         stage('Install Dependencies') 
         {
             steps {
