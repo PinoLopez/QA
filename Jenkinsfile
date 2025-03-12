@@ -2,6 +2,7 @@ pipeline {
     agent {
         docker {
             image 'node:18-alpine' // Usa una imagen de Docker con Node.js
+            args '-u root' // Asegura que el contenedor se ejecute como root
         }
     }
     stages {
