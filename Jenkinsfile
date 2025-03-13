@@ -10,8 +10,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    docker.image('node:18').inside("--user node") { // Ejecutar como usuario 'node'
-                        sh 'npm install'
+                    docker.image('node:18').inside("--user node") {
+                        sh 'npm install --unsafe-perm' // Añadimos --unsafe-perm
                     }
                 }
             }
@@ -34,8 +34,8 @@ pipeline {
         stage('Run Artillery Load Test') {
             steps {
                 script {
-                    docker.image('node:18').inside("--user node") { // Ejecutar como usuario 'node'
-                        sh 'npm install -g artillery'
+                    docker.image('node:18').inside("--user node") {
+                        sh 'npm install -g artillery --unsafe-perm' // Añadimos --unsafe-perm
                         sh 'artillery run artillery/jsonplaceholder.yml --output artillery-report.json'
                     }
                 }
