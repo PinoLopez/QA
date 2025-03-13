@@ -2,6 +2,11 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout SCM') {
+            steps {
+                checkout scm
+            }
+        }
         stage('Checkout Code') {
             steps {
                 git branch: 'master', url: 'https://github.com/PinoLopez/QA.git'
@@ -9,29 +14,28 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
-                sh 'npx playwright install --with-deps'
-                sh 'npm install artillery --save-dev'
+                script {
+                    isUnix() {
+                        withEnv([]) {
+                            sh 'docker inspect -f . node:18'
+                        }
+                    }
+                }
+                withDockerContainer(image: 'node:18', args: '-u 128:138 -w /var/lib/jenkins/workspace/QA-Pipeline -v /var/lib/jenkins/workspace/QA-Pipeline:/var/lib/jenkins/workspace/QA-Pipeline:rw,z -v /var/lib/jenkins/workspace/QA-Pipeline@tmp:/var/lib/jenkins/workspace/QA-Pipeline@tmp:rw,z') {
+                    sh 'npm install'
+                    sh 'sudo chown -R node:node /.npm'
+                    sh 'npx playwright install --with-deps'
+                }
             }
         }
         stage('Playwright Tests') {
             steps {
-                sh 'npx playwright test playwright/demoblaze.spec.ts --reporter html'
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'playwright-report/**'
-                }
+                sh 'npx playwright test'
             }
         }
         stage('Artillery Tests') {
             steps {
-                sh 'artillery run artillery/jsonplaceholder.yml --output artillery-report.json'
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'artillery-report.json'
-                }
+                sh 'npx artillery run test.yml'
             }
         }
     }
