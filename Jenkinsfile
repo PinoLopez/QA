@@ -6,7 +6,13 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('Cleanup Workspace') {
+            steps {
+                deleteDir()
+            }
+        }
+
+        stage('Checkout Code') {
             steps {
                 git branch: 'master', url: 'https://github.com/PinoLopez/QA.git'
             }
@@ -15,11 +21,11 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
-                sh 'npx playwright install --with-deps'
+                sh 'npm run install-playwright'
             }
         }
 
-        stage('Playwright Tests') {
+        stage('Run Playwright Tests') {
             steps {
                 sh 'npm test'
             }
@@ -30,10 +36,10 @@ pipeline {
             }
         }
 
-        stage('Artillery Tests') {
+        stage('Run Artillery Load Test') {
             steps {
                 sh 'npm run artillery'
-                sh 'artillery report artillery-report.json --output artillery-report.html'
+                sh 'npm run artillery-report'
             }
             post {
                 always {
@@ -45,14 +51,7 @@ pipeline {
 
     post {
         always {
-            publishHTML([
-                allowMissing: false,
-                alwaysLinkToLastBuild: false,
-                keepAll: true,
-                reportDir: 'playwright-report',
-                reportFiles: 'index.html',
-                reportName: 'Playwright Report'
-            ])
+            archiveArtifacts artifacts: 'playwright-report/**, artillery-report.html', allowEmptyArchive: true
         }
     }
 }
