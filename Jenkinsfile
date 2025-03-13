@@ -10,7 +10,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    docker.image('node:18').inside {
+                    docker.image('node:18').inside("--user node") { // Ejecutar como usuario 'node'
                         sh 'npm install'
                     }
                 }
@@ -34,7 +34,7 @@ pipeline {
         stage('Run Artillery Load Test') {
             steps {
                 script {
-                    docker.image('node:18').inside {
+                    docker.image('node:18').inside("--user node") { // Ejecutar como usuario 'node'
                         sh 'npm install -g artillery'
                         sh 'artillery run artillery/jsonplaceholder.yml --output artillery-report.json'
                     }
