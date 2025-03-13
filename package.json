@@ -6,6 +6,7 @@
   {
     "test": "npx playwright test",
     "artillery": "artillery run artillery.yml"
+    "artillery-report": "artillery report artillery-report.json --output artillery-report.html"
   },
   "devDependencies": 
   {
@@ -20,3 +21,5 @@
     "dotenv": "^16.3.1"
   }
 }
+
+
