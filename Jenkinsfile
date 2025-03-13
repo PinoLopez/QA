@@ -21,10 +21,12 @@ pipeline {
                         }
                     }
                 }
-                withDockerContainer(image: 'node:18', args: '-u 128:138 -w /var/lib/jenkins/workspace/QA-Pipeline -v /var/lib/jenkins/workspace/QA-Pipeline:/var/lib/jenkins/workspace/QA-Pipeline:rw,z -v /var/lib/jenkins/workspace/QA-Pipeline@tmp:/var/lib/jenkins/workspace/QA-Pipeline@tmp:rw,z') {
-                    sh 'npm install'
-                    sh 'sudo chown -R node:node /.npm'
-                    sh 'npx playwright install --with-deps'
+                steps {
+                    withDockerContainer(image: 'node:18', args: '-u 128:138 -w /var/lib/jenkins/workspace/QA-Pipeline -v /var/lib/jenkins/workspace/QA-Pipeline:/var/lib/jenkins/workspace/QA-Pipeline:rw,z -v /var/lib/jenkins/workspace/QA-Pipeline@tmp:/var/lib/jenkins/workspace/QA-Pipeline@tmp:rw,z') {
+                        sh 'npm install'
+                        sh 'sudo chown -R node:node /.npm'
+                        sh 'npx playwright install --with-deps'
+                    }
                 }
             }
         }
