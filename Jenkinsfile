@@ -9,21 +9,14 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                script {
-                    docker.image('node:18').inside("--user node") {
-                        sh 'npm install --unsafe-perm' // Añadimos --unsafe-perm
-                    }
-                }
+                sh 'npm install'
+                sh 'npx playwright install --with-deps'
+                sh 'npm install artillery --save-dev'
             }
         }
-        stage('Run Playwright Tests') {
+        stage('Playwright Tests') {
             steps {
-                script {
-                    docker.image('mcr.microsoft.com/playwright/python:v1.37.0-jammy').inside {
-                        sh 'npm ci'
-                        sh 'npx playwright test playwright/demoblaze.spec.ts --reporter html'
-                    }
-                }
+                sh 'npx playwright test playwright/demoblaze.spec.ts --reporter html'
             }
             post {
                 always {
@@ -31,14 +24,9 @@ pipeline {
                 }
             }
         }
-        stage('Run Artillery Load Test') {
+        stage('Artillery Tests') {
             steps {
-                script {
-                    docker.image('node:18').inside("--user node") {
-                        sh 'npm install -g artillery --unsafe-perm' // Añadimos --unsafe-perm
-                        sh 'artillery run artillery/jsonplaceholder.yml --output artillery-report.json'
-                    }
-                }
+                sh 'artillery run artillery/jsonplaceholder.yml --output artillery-report.json'
             }
             post {
                 always {
