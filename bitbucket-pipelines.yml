@@ -6,7 +6,9 @@ pipelines:
         caches:
           - node
         script:
-          - npm install
+          - npm cache clean --force # Limpia la caché de npm
+          - rm -rf node_modules # Elimina la carpeta node_modules
+          - npm install --force # Instala las dependencias forzando la instalación
           - npx playwright install --with-deps
           - npx playwright test
         artifacts:
