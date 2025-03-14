@@ -37,33 +37,3 @@ Verificar la funcionalidad de búsqueda avanzada de productos.
 * Ejecutar y automatizar todo lo posible.
 
 ## Ejercicio 4: Pipeline CI/CD
-
-### Jenkinsfile
-
-```groovy
-pipeline {
-  agent any
-  stages {
-    stage('Install Dependencies') {
-      steps {
-        sh 'npm install'
-        sh 'npx playwright install'
-      }
-    }
-    stage('Playwright Tests') {
-      steps {
-        sh 'npm test'
-      }
-    }
-    stage('Artillery Tests') {
-      steps {
-        sh 'npm run artillery'
-      }
-    }
-  }
-  post {
-    always {
-      publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright Report'])
-    }
-  }
-}
