@@ -6,9 +6,7 @@ pipelines:
         caches:
           - node
         script:
-          - npm cache clean --force # Limpia la caché de npm
-          - rm -rf node_modules # Elimina la carpeta node_modules
-          - npm install --force # Instala las dependencias forzando la instalación
+          - npm install
           - npx playwright install --with-deps
           - npx playwright test
         artifacts:
@@ -20,6 +18,7 @@ pipelines:
           - node
         script:
           - npm install -g artillery
+          - mkdir reports # Crea el directorio reports
           - artillery run artillery-config.yml --output reports/artillery-report.json
         artifacts:
           - reports/**
