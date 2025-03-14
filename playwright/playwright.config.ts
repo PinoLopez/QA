@@ -13,7 +13,7 @@ export default defineConfig({
   projects: [
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'], headless: false },
+      use: { ...devices['Desktop Firefox'], headless: true },
     },
   ],
 });
