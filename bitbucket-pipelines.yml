@@ -1,0 +1,23 @@
+pipelines:
+  default:
+    - step:
+        name: Instalar dependencias y ejecutar pruebas de Playwright
+        image: node:18 # Usamos una imagen de Node.js para Playwright
+        caches: # Caching de dependencias para acelerar las futuras ejecuciones
+          - node
+        script:
+          - npm install # Instala las dependencias del proyecto
+          - npx playwright install --with-deps # Instala los navegadores para Playwright
+          - npx playwright test # Ejecuta los tests de Playwright
+        artifacts: # Almacena los reportes de Playwright
+          - playwright-report/**
+    - step:
+        name: Ejecutar prueba de carga con Artillery
+        image: node:18 # También usamos Node.js para Artillery
+        caches:
+          - node
+        script:
+          - npm install -g artillery # Instala Artillery globalmente
+          - artillery run artillery-config.yml --output reports/artillery-report.json # Ejecuta la prueba de carga y genera un reporte JSON
+        artifacts: # Almacena el reporte de Artillery
+          - reports/**
