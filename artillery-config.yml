@@ -1,0 +1,12 @@
+config:
+  target: "https://jsonplaceholder.typicode.com" # URL base de la API
+  phases:
+    - duration: 60 # Duración de la prueba en segundos (1 minuto)
+      arrivalRate: 100 # Número de usuarios virtuales que llegan por segundo
+  defaults:
+    headers:
+      Content-Type: "application/json"
+scenarios:
+  - flow:
+      - get:
+          url: "/posts" # Endpoint de la API que se va a probar
