@@ -1,24 +1,24 @@
-pipelines:
-  default:
-    - step:
-        name: Instalar dependencias y ejecutar pruebas de Playwright
-        image: node:18
-        caches:
-          - node
-        script:
-          - npm install
-          - npx playwright install --with-deps
-          - npx playwright test
-        artifacts:
-          - playwright-report/**
-    - step:
-        name: Ejecutar prueba de carga con Artillery
-        image: node:18
-        caches:
-          - node
-        script:
-          - npm install -g artillery
-          - mkdir reports # Crea el directorio reports
-          - artillery run artillery-config.yml --output reports/artillery-report.json
-        artifacts:
-          - reports/**
+pipelines: # Inicio de la definición de los pipelines.
+  default: # Define el pipeline que se ejecutará por defecto (en cada push a la rama principal).
+    - step: # Define un paso dentro del pipeline.
+        name: Instalar dependencias y ejecutar pruebas de Playwright # Nombre  del paso.
+        image: node:18 # Especifica la imagen de Docker que se utilizará para este paso (Node.js versión 18).
+        caches: # Define las cachés para acelerar la build.
+          - node # Cachea las dependencias de Node.js (node_modules).
+        script: # Define los comandos que se ejecutarán en este paso.
+          - npm install # Instala las dependencias del proyecto definidas en package.json.
+          - npx playwright install --with-deps # Instala los navegadores y dependencias necesarias para Playwright.
+          - npx playwright test # Ejecuta las pruebas de Playwright.
+        artifacts: # Define los archivos que se guardarán como artefactos de la build.
+          - playwright-report/** # Guarda todos los archivos en el directorio playwright-report (informe de Playwright).
+    - step: # Define EL SEGUNDO paso dentro del pipeline.
+        name: Ejecutar prueba de carga con Artillery 
+        image: node:18 # Especifica la imagen de Docker que se utilizará para este paso (Node.js versión 18).
+        caches: # Define las cachés para acelerar la build.
+          - node # Cachea las dependencias de Node.js (node_modules).
+        script: # Define los comandos que se ejecutarán en este paso.
+          - npm install -g artillery # Instala Artillery globalmente.
+          - mkdir reports # Crea el directorio "reports" para almacenar los informes de Artillery.
+          - artillery run artillery-config.yml --output reports/artillery-report.json # Ejecuta la prueba de carga definida en artillery-config.yml y guarda el informe 
+        artifacts: # Define los archivos que se guardarán como artefactos de la build.
+          - reports/** # Guarda todos los archivos en el directorio "reports" (informes de Artillery).
