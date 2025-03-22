@@ -1,9 +1,9 @@
-config:
-  target: "https://jsonplaceholder.typicode.com"
-  phases:
-    - duration: 60
-      arrivalRate: 100
-scenarios:
-  - flow:
-      - get:
-          url: "/posts"
+config: # Inicio de la sección de configuración de la prueba.
+  target: "https://jsonplaceholder.typicode.com" # Define la URL base del servicio web que se va a probar: jsonplaceholder, un servicio de prueba que simula una API REST.
+  phases: # Define las fases de la prueba de carga.
+    - duration: 60 # Especifica la duración de la fase en segundos
+      arrivalRate: 100 # Define la tasa de llegada de las peticiones por segundo (100 peticiones por segundo). 
+scenarios: # Inicio de la sección de definición de los escenarios de prueba.
+  - flow: # Define el flujo de acciones que se ejecutarán en este escenario.
+      - get: # Especifica que se realizará una petición HTTP GET.
+          url: "/posts" # la ruta relativa de la URL a la que se realizará la petición GET. Se concatenará con la URL base definida en "target" (https://jsonplaceholder.typicode.com/posts).
