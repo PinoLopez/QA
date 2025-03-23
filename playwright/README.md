@@ -10,7 +10,7 @@ Este proyecto automatiza el proceso de compra en el sitio web Demo Blaze (https:
 
 ## Instrucciones
 
-1.  Clona este repositorio.
+1.  Clona el repositorio.
 2.  Ejecuta `npm install` para instalar las dependencias.
 3.  Ejecuta `npx playwright test` para ejecutar los tests.
 
@@ -22,7 +22,7 @@ Este proyecto automatiza el proceso de compra en el sitio web Demo Blaze (https:
 
 ## Notas
 
-* Asegúrate de tener una conexión a Internet estable.
+* Hay que tener una conexión a Internet estable.
 * Este test asume que el primer producto en la lista está disponible.
-* Puedes modificar los datos de prueba en el archivo `demoblaze.spec.ts`.
+* Todos los datos de prueba estan en el archivo `demoblaze.spec.ts`.
 * Para poder ejecutar el test, se deben de tener las dependencias ya instaladas, y se debe de ejecutar el comando npx playwright test desde la raiz del proyecto.

@@ -7,7 +7,6 @@ Automatización de la compra en Demo Blaze.
 ## Ejercicio 2: Prueba de estrés con Artillery
 
 Prueba de carga del endpoint de posts de JSONPlaceholder.
-artillery report report.json --output report.html
 
 ## Ejercicio 3: Test Plan
 
@@ -37,3 +36,5 @@ Verificar la funcionalidad de búsqueda avanzada de productos.
 * Ejecutar y automatizar todo lo posible.
 
 ## Ejercicio 4: Pipeline CI/CD
+
+* Todo debe aparecer en una build dentro de https://bitbucket.org/

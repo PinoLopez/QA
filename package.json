@@ -1,13 +1,13 @@
 {
-  "name": "qa",
+  "name": "QA",
   "version": "1.0.0",
-  "description": "",
+  "description": "Tests",
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test"
   },
   "keywords": [],
-  "author": "",
+  "author": "Juan Pino Lopez",
   "license": "ISC",
   "devDependencies": 
   {

@@ -1,7 +1,7 @@
 config:
   target: "https://jsonplaceholder.typicode.com" # URL base de la API
   phases:
-    - duration: 60 # Duración de la prueba en segundos (1 minuto)
+    - duration: 60 # Duración de la prueba en segundos 
       arrivalRate: 100 # Número de usuarios virtuales que llegan por segundo
   defaults:
     headers:
